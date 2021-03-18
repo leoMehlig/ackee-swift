@@ -1,2 +1,3 @@
-# ackee-swift
-An Ackee tracker for iOS and macOS
+# Ackee
+
+A description of this package.
