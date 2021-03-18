@@ -67,6 +67,9 @@ public class Tracker: ObservableObject {
     }
 
     private func send<Variables: Codable, Response: Decodable>(request: GraphQLRequest<Variables, Response>) -> AnyPublisher<Response, GraphQLError> {
+        guard self.isEnabled else {
+            return Fail(error: GraphQLError.disabled).eraseToAnyPublisher()
+        }
         var urlRequest = URLRequest(url: url)
         urlRequest.httpMethod = "POST"
         do {
@@ -229,6 +232,7 @@ public enum GraphQLError: Decodable, Swift.Error {
     case response(message: String)
     case network(URLSession.DataTaskPublisher.Failure)
     case encoding(Error)
+    case disabled
 
     public init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
